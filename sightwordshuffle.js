@@ -8,16 +8,15 @@ function sightWordsShuffle() {
         sightwords.forEach(function(word) {
             var shuffledWord = shuffle(word);
             shuffledToSightWord[shuffledWord] = word;
-            <!--TODO append input and validation -->
             var wordInputID = word+'-input';
-            var $label = $('<label/>').attr({'id': word+'-label', 'for': wordInputID}).html(shuffledWord);
+            var $label = $('<label/>').attr({'id': word+'-label', 'class': 'col-sm-2 control-label', 'for': wordInputID}).html(shuffledWord);
             var $input = $('<input/>').attr({'id': wordInputID, 'type': 'text', 'class': 'form-control', 'aria-describedby': wordInputID}).on("input", function(e) {    
                 if(word.startsWith($(this).val())) {
                     $(this).css({'border-color': 'green', 'border-width': 3});
                     if(word == $(this).val()) {
                         $(this).hide();
-                        $('#'+word+'-label').html('&nbsp;'+word);
-                        var $span = $('<span/>').attr({'class': 'glyphicon glyphicon-ok text-success', 'aria-hidden': 'true'});
+                        $('#'+word+'-label').html(word);
+                        var $span = $('<span/>').attr({'class': 'glyphicon glyphicon-ok text-success col-sm-1', 'aria-hidden': 'true'});
                         $('#'+word+'-hint').before($span);
                         $('#'+word+'-label').after('<br/>');
                     }
@@ -25,11 +24,13 @@ function sightWordsShuffle() {
                     $(this).css({'border-color': 'red', 'border-width': 3});
                 };
             });
-            var $hint = $('<span/>').attr({'id': word+'-hint', 'class': 'glyphicon glyphicon-volume-up', 'aria-hidden': 'true'}).click(function() {
+            var $hint = $('<span/>').attr({'id': word+'-hint', 'class': 'glyphicon glyphicon-volume-up col-sm-1', 'aria-hidden': 'true'}).click(function() {
                 var msg = new SpeechSynthesisUtterance(word);
                 window.speechSynthesis.speak(msg);
             });
-            $('#shuffledWords').append($hint, $label, $input);
+            var $inputDiv = $('<div/>').attr({'class': 'col-sm-5'}).append($input);
+            var $form = $('<form/>').attr({'class': 'form-group'}).append($hint, $label, $inputDiv);
+            $('#shuffledWords').append($form);
         });
         $('#shuffle-input-group').hide();
     });
