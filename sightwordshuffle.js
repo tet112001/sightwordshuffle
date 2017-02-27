@@ -6,7 +6,7 @@ function sightWordsShuffle() {
         var sightwordinputs = $('#sightWordsInput').val().trim().replace(/,/g, ' ').replace(/\s+/g, " ");
 	sightwordinputs = sightwordinputs.replace(/[^a-zA-Z ]+/g, '');
         var sightwords = sightwordinputs.split(" ");
-        sightwords.forEach(function(word) {
+        sightwords.forEach(function(word, index) {
             var shuffledWord = shuffle(word);
             shuffledToSightWord[shuffledWord] = word;
             var wordInputID = word+'-input';
@@ -14,8 +14,8 @@ function sightWordsShuffle() {
             
             var $input = $('<input/>').attr({'id': wordInputID, 'type': 'text', 'class': 'form-control', 'aria-describedby': wordInputID}).on("input", function(e) {    
                 if(word.startsWith($(this).val())) {
+                    $('#'+word+'-form-group').removeClass('has-error').addClass('has-success');
                     if(word == $(this).val()) {
-                        $('#'+word+'-form-group').removeClass('has-error').addClass('has-success');
                         $('#'+word+'-label').html(word);
                         var $successSpan = $('<span/>').attr({'class': 'glyphicon glyphicon-ok form-control-feedback', 'aria-hidden': 'true'});
                         $('#'+word+'-input_group').append($successSpan);
@@ -23,8 +23,6 @@ function sightWordsShuffle() {
                     }
                 } else {
                     $('#'+word+'-form-group').removeClass('has-success').addClass('has-error');
-//                    var $errorSpan = $('<span/>').attr({'class': 'glyphicon glyphicon-remove form-control-feedback', 'aria-hidden': 'true'});
-//                    $('#'+word+'-input_group').append($errorSpan);
                 };
             });
 //        http://getbootstrap.com/css/#forms-control-validation
